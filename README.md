@@ -11,8 +11,10 @@ Each interface is neatly categorized by design style, completely self-contained,
 ```text
 Login_Interface/
 │
+├── 📁 Interactive-Lamp/                    # 💡 Interactive Desk Lamp Interfaces
+│   └── 📁 lamp-login-01/                   # Lamp with Pull Cord String & Light Beam
+│
 ├── 📁 Animated-Interactive/                # Dynamic & Animated Forms
-│   ├── 📁 interactive-lamp-login-01/       # 💡 Interactive Lamp with Pull Cord & Light Beam
 │   └── 📁 card-flip-3d-01/                 # 3D Perspective Card Flip (Login & Register)
 │
 ├── 📁 Glassmorphism/                        # Glass & Frosted Blur Aesthetics
@@ -35,7 +37,7 @@ Login_Interface/
 
 | Category | Interface Name | Preview / Description | Features | Live Demo / Path |
 | :--- | :--- | :--- | :--- | :--- |
-| **Animated-Interactive** | `interactive-lamp-login-01` | 💡 Interactive desk lamp with pull cord string, audio click, light cone, and dust particles | • Interactive Pull String<br>• Light Beam & Dust Particles<br>• Sign In & Sign Up Tabs | [View Details](file:///e:/Small_Interface/Animated-Interactive/interactive-lamp-login-01/README.md) |
+| **Interactive-Lamp** | `lamp-login-01` | 💡 Interactive desk lamp with pull cord string, audio click, light cone, and dust particles | • Interactive Pull String<br>• Light Beam & Dust Particles<br>• Sign In & Sign Up Tabs | [View Details](file:///e:/Small_Interface/Interactive-Lamp/lamp-login-01/README.md) |
 | **Animated-Interactive**| `card-flip-3d-01` | 3D perspective flip card switching between login and registration | • Smooth 180° 3D Flip<br>• 2-in-1 Dual Face Card<br>• Zero Dependencies | [View Details](file:///e:/Small_Interface/Animated-Interactive/card-flip-3d-01/README.md) |
 | **Glassmorphism** | `frosted-glass-01` | Frosted blur card with animated colorful glowing orbs and gradient backdrop | • Password Visibility Toggle<br>• Glassmorphism CSS<br>• Social Logins | [View Details](file:///e:/Small_Interface/Glassmorphism/frosted-glass-01/README.md) |
 | **Modern-Minimal** | `clean-card-01` | Sleek corporate / SaaS style minimal card with subtle borders | • Clean Inputs & Validation<br>• Simulated Async Login<br>• Responsive Layout | [View Details](file:///e:/Small_Interface/Modern-Minimal/clean-card-01/README.md) |
@@ -52,7 +54,7 @@ Login_Interface/
 
 2. **Navigate to the template you want:**
    ```bash
-   cd Animated-Interactive/interactive-lamp-login-01
+   cd Interactive-Lamp/lamp-login-01
    ```
 
 3. **Open directly in browser:**

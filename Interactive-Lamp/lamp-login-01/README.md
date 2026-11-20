@@ -1,4 +1,4 @@
-# Interactive Lamp Login / Signup (`interactive-lamp-login-01`)
+# Interactive Lamp Login / Signup (`lamp-login-01`)
 
 A creative and interactive authentication interface featuring an articulated **desk lamp with a pull string / cord**. 
 

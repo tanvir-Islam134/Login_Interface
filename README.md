@@ -2,7 +2,7 @@
 
 A curated collection of modern, responsive, and beautifully crafted **Login and Authentication Interfaces** built with pure HTML5, CSS3, and JavaScript. 
 
-Each interface is neatly categorized by design style, completely self-contained, and ready to be dropped into any web project.
+Each interface is neatly categorized by design style, completely self-contained, and ready to be dropped into any production web project.
 
 ---
 
@@ -11,21 +11,20 @@ Each interface is neatly categorized by design style, completely self-contained,
 ```text
 Login_Interface/
 │
-├── 📁 Interactive-Lamp/                    # 💡 Interactive Desk Lamp Interfaces
-│   └── 📁 lamp-login-01/                   # Lamp with Pull Cord String & Light Beam
+├── 📁 Split-Screen/                        # 💼 Enterprise SaaS & Cloud Split-Screen Layouts
+│   └── 📁 enterprise-split-01/             # High-Converting Split-Screen Auth with Social SSO
 │
-├── 📁 Animated-Interactive/                # Dynamic & Animated Forms
-│   └── 📁 card-flip-3d-01/                 # 3D Perspective Card Flip (Login & Register)
+├── 📁 Modern-Minimal/                      # 🏢 Clean, Flat, SaaS-style Forms
+│   └── 📁 clean-card-01/                   # Clean Minimalist Login with Loading State
 │
-├── 📁 Glassmorphism/                        # Glass & Frosted Blur Aesthetics
+├── 📁 Glassmorphism/                        # 🔮 Glass & Frosted Blur Aesthetics
 │   └── 📁 frosted-glass-01/                # Glassmorphic Login Card with Glow Orbs
 │
-├── 📁 Modern-Minimal/                      # Clean, Flat, SaaS-style Forms
-│   └── 📁 clean-card-01/                   # Clean Minimalist Login with Loading State
+├── 📁 Animated-Interactive/                # ⚡ Dynamic & Interactive Forms
+│   └── 📁 card-flip-3d-01/                 # 3D Perspective Card Flip (Login & Register)
 │
 ├── 📁 Neumorphism/                         # Soft UI & Extruded Shadow Effects (Coming Soon)
 ├── 📁 Dark-Cyberpunk/                      # Neon & Futuristic Dark Themes (Coming Soon)
-├── 📁 Split-Screen/                        # Hero Artwork + Form Layouts (Coming Soon)
 │
 ├── .gitignore
 └── README.md
@@ -37,10 +36,10 @@ Login_Interface/
 
 | Category | Interface Name | Preview / Description | Features | Live Demo / Path |
 | :--- | :--- | :--- | :--- | :--- |
-| **Interactive-Lamp** | `lamp-login-01` | 💡 Interactive desk lamp with pull cord string, audio click, light cone, and dust particles | • Interactive Pull String<br>• Light Beam & Dust Particles<br>• Sign In & Sign Up Tabs | [View Details](file:///e:/Small_Interface/Interactive-Lamp/lamp-login-01/README.md) |
-| **Animated-Interactive**| `card-flip-3d-01` | 3D perspective flip card switching between login and registration | • Smooth 180° 3D Flip<br>• 2-in-1 Dual Face Card<br>• Zero Dependencies | [View Details](file:///e:/Small_Interface/Animated-Interactive/card-flip-3d-01/README.md) |
-| **Glassmorphism** | `frosted-glass-01` | Frosted blur card with animated colorful glowing orbs and gradient backdrop | • Password Visibility Toggle<br>• Glassmorphism CSS<br>• Social Logins | [View Details](file:///e:/Small_Interface/Glassmorphism/frosted-glass-01/README.md) |
+| **Split-Screen** | `enterprise-split-01` | Enterprise cloud SaaS login with value proposition, customer proof & SSO | • 50/50 Split Showcase<br>• Google & GitHub SSO<br>• Magic Link Trigger<br>• SOC2 Security Badges | [View Details](file:///e:/Small_Interface/Split-Screen/enterprise-split-01/README.md) |
 | **Modern-Minimal** | `clean-card-01` | Sleek corporate / SaaS style minimal card with subtle borders | • Clean Inputs & Validation<br>• Simulated Async Login<br>• Responsive Layout | [View Details](file:///e:/Small_Interface/Modern-Minimal/clean-card-01/README.md) |
+| **Glassmorphism** | `frosted-glass-01` | Frosted blur card with animated colorful glowing orbs and gradient backdrop | • Password Visibility Toggle<br>• Glassmorphism CSS<br>• Social Logins | [View Details](file:///e:/Small_Interface/Glassmorphism/frosted-glass-01/README.md) |
+| **Animated-Interactive**| `card-flip-3d-01` | 3D perspective flip card switching between login and registration | • Smooth 180° 3D Flip<br>• 2-in-1 Dual Face Card<br>• Zero Dependencies | [View Details](file:///e:/Small_Interface/Animated-Interactive/card-flip-3d-01/README.md) |
 
 ---
 
@@ -54,7 +53,7 @@ Login_Interface/
 
 2. **Navigate to the template you want:**
    ```bash
-   cd Interactive-Lamp/lamp-login-01
+   cd Split-Screen/enterprise-split-01
    ```
 
 3. **Open directly in browser:**
@@ -68,8 +67,8 @@ Login_Interface/
 ## 🛠️ Built With
 
 - **HTML5:** Semantic, accessible markups.
-- **CSS3:** Custom properties (CSS variables), Flexbox, 3D Transforms, Backdrop Filter, Keyframe Animations.
-- **Vanilla JavaScript:** Fast, lightweight, Web Audio API, Canvas particle animation, zero external dependencies.
+- **CSS3:** Custom properties (CSS variables), Flexbox & CSS Grid, 3D Transforms, Backdrop Filter, Keyframe Animations.
+- **Vanilla JavaScript:** Fast, lightweight, form validation, zero external dependencies.
 
 ---
 

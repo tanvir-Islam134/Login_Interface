@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Lamp Login / Signup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-on="false">
+
+  <!-- Ambient Light Atmosphere -->
+  <div class="ambient-glow"></div>
+  <canvas id="dustCanvas"></canvas>
+
+  <!-- Main Scene Container -->
+  <main class="scene-container">
+    
+    <!-- LEFT SIDE: Lamp Section -->
+    <div class="lamp-wrapper">
+      
+      <!-- Volumetric Light Beam -->
+      <div class="light-cone" id="lightCone"></div>
+
+      <!-- Desk Lamp Graphic -->
+      <div class="lamp-art">
+        <svg class="lamp-svg" viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Lamp Base -->
+          <ellipse cx="110" cy="365" rx="75" ry="18" fill="#0b0e14" stroke="#1c2430" stroke-width="3"/>
+          <ellipse cx="110" cy="360" rx="64" ry="13" fill="#141a24"/>
+          <circle cx="110" cy="358" r="12" fill="#1c2430" stroke="#f59e0b" stroke-width="3"/>
+
+          <!-- Lower Arm -->
+          <line x1="110" y1="355" x2="80" y2="230" stroke="#0f141d" stroke-width="12" stroke-linecap="round"/>
+          <line x1="110" y1="355" x2="80" y2="230" stroke="#2a3547" stroke-width="4" stroke-linecap="round"/>
+
+          <!-- Elbow Joint -->
+          <circle cx="80" cy="230" r="11" fill="#0f141d" stroke="#f59e0b" stroke-width="3.5"/>
+          <circle cx="80" cy="230" r="4.5" fill="#fbbf24"/>
+
+          <!-- Upper Arm -->
+          <line x1="80" y1="230" x2="135" y2="135" stroke="#0f141d" stroke-width="10" stroke-linecap="round"/>
+          <line x1="80" y1="230" x2="135" y2="135" stroke="#2a3547" stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- Head Pivot Joint -->
+          <circle cx="135" cy="135" r="9" fill="#0f141d" stroke="#f59e0b" stroke-width="3"/>
+
+          <!-- Lamp Shade Dome -->
+          <g class="lamp-head-group">
+            <path d="M125 130 C 115 80, 195 65, 215 110 C 225 130, 200 155, 160 160 Z" fill="#111622" stroke="#1f2839" stroke-width="2.5"/>
+            <!-- Glow Rim -->
+            <ellipse class="shade-rim-glow" cx="185" cy="142" rx="42" ry="20" transform="rotate(-25 185 142)" fill="#151d2a" stroke="#f59e0b" stroke-width="3"/>
+            <!-- Bulb Inner Core -->
+            <ellipse class="lamp-bulb" cx="185" cy="142" rx="16" ry="8" transform="rotate(-25 185 142)" fill="#0f172a"/>
+          </g>
+        </svg>
+
+        <!-- Hanging Pull Cord with String & Ring (Draggable & Clickable) -->
+        <div class="cord-mechanism" id="cordMechanism">
+          <div class="cord-thread" id="cordThread"></div>
+          <div class="cord-pull-ring" id="cordRing" title="Pull string to turn on / off">
+            <div class="ring-core"></div>
+          </div>
+          <!-- Floating Tooltip Hint (Shown when light is OFF) -->
+          <div class="pull-tooltip" id="pullTooltip">
+            <span class="tooltip-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </span>
+            <span>Pull string to turn on</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE: The Login / Signup Interface Card (Appears when light is ON) -->
+    <div class="auth-card-wrapper" id="authCardWrapper">
+      <div class="auth-card" id="authCard">
+        
+        <!-- Top Title & Subtitle -->
+        <div class="card-intro">
+          <h2 id="cardTitle">Sign Up</h2>
+          <p id="cardSubtitle">Create an account to get started</p>
+        </div>
+
+        <!-- Segmented Toggle: Sign In vs Sign Up -->
+        <div class="mode-toggle">
+          <button type="button" class="mode-btn" id="btnSignIn">Sign In</button>
+          <button type="button" class="mode-btn active" id="btnSignUp">Sign Up</button>
+        </div>
+
+        <!-- Form Elements -->
+        <form id="lampForm" novalidate>
+          
+          <!-- Username / Email Field -->
+          <div class="field-item" id="userFieldGroup">
+            <label for="inputUsername" id="userFieldLabel">Username or Email</label>
+            <div class="field-input-box">
+              <span class="field-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input type="text" id="inputUsername" placeholder="Enter username or email" required autocomplete="username">
+            </div>
+            <span class="field-error" id="userError"></span>
+          </div>
+
+          <!-- Password Field -->
+          <div class="field-item">
+            <div class="field-header">
+              <label for="inputPassword">Password</label>
+              <a href="#" class="forgot-btn" id="forgotBtn">Forgot?</a>
+            </div>
+            <div class="field-input-box">
+              <span class="field-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="inputPassword" placeholder="Enter password" required autocomplete="current-password">
+              <button type="button" class="eye-toggle-btn" id="eyeToggle" aria-label="Toggle password view">
+                <svg id="eyeSvg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="field-error" id="passError"></span>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="remember-row">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="checkRemember" checked>
+              <span class="checkbox-indicator"></span>
+              <span class="checkbox-text">Remember me</span>
+            </label>
+          </div>
+
+          <!-- Cyan Glowing CTA Button -->
+          <button type="submit" class="submit-cta" id="submitCta">
+            <span id="submitCtaText">Create Account</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Social Separator -->
+        <div class="or-separator">
+          <span>OR CONTINUE WITH</span>
+        </div>
+
+        <!-- Social Icons Grid -->
+        <div class="social-row">
+          <button type="button" class="social-icon-btn" title="Sign in with Google">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#EA4335" d="M12 5c1.7 0 3 .6 4 1.5l3-3C17.2 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+              <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+              <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.1s.7 5.4 1.9 7.8l3.7-2.9z"/>
+              <path fill="#34A853" d="M12 23.2c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2-6.4-4.8L1.9 16.6C3.7 20.3 7.5 23.2 12 23.2z"/>
+            </svg>
+          </button>
+          <button type="button" class="social-icon-btn" title="Sign in with GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </button>
+          <button type="button" class="social-icon-btn" title="Sign in with Apple">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.89c.64-.78 1.08-1.86.96-2.94-1 .04-2.14.67-2.8 1.44-.58.67-1.1 1.77-.96 2.82 1.12.09 2.16-.54 2.8-1.32z"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Interactive Toast Notification -->
+  <div id="sceneToast" class="scene-toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

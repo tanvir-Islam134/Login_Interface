@@ -13,7 +13,7 @@
 
   <!-- Background Campus Photo Layer with Gradient Shading -->
   <div class="bg-photo-container">
-    <img src="assets/campus.jpg?v=3" alt="BAUST Campus" class="bg-campus-img" id="campusImg">
+    <img src="assets/campus.jpg?v=4" alt="BAUST Campus" class="bg-campus-img" id="campusImg">
     <div class="bg-shading-overlay"></div>
   </div>
 
@@ -32,19 +32,40 @@
         <svg class="lamp-svg" viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
           <defs>
             <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.82"/>
-              <stop offset="20%" stop-color="#2dd4bf" stop-opacity="0.45"/>
-              <stop offset="55%" stop-color="#38bdf8" stop-opacity="0.2"/>
-              <stop offset="85%" stop-color="#06b6d4" stop-opacity="0.05"/>
-              <stop offset="100%" stop-color="#090d16" stop-opacity="0"/>
+              <stop offset="0%" stop-color="#38f8d4" stop-opacity="0.85"/>
+              <stop offset="15%" stop-color="#2dd4bf" stop-opacity="0.55"/>
+              <stop offset="45%" stop-color="#2dd4bf" stop-opacity="0.25"/>
+              <stop offset="75%" stop-color="#06b6d4" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
             </linearGradient>
-            <filter id="beamBlur" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="4"/>
+            <linearGradient id="ambientBeamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#38f8d4" stop-opacity="0.45"/>
+              <stop offset="25%" stop-color="#2dd4bf" stop-opacity="0.18"/>
+              <stop offset="65%" stop-color="#0284c7" stop-opacity="0.05"/>
+              <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="beamBlur" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="14"/>
+            </filter>
+            <filter id="ambientBeamBlur" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="26"/>
+            </filter>
+            <filter id="bulbGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="10"/>
+            </filter>
+            <filter id="groundShadowBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="5"/>
             </filter>
           </defs>
 
-          <!-- Volumetric Light Beam: starts precisely at the rim ellipse (223,124) and (147,160) -->
-          <polygon class="svg-light-beam" points="223,124 1300,-100 1300,550 147,160" fill="url(#beamGradient)" filter="url(#beamBlur)"/>
+          <!-- Outer Soft Ambient Light Cone -->
+          <polygon class="svg-light-beam-ambient" points="218,128 1050,-20 1050,560 152,158" fill="url(#ambientBeamGradient)" filter="url(#ambientBeamBlur)"/>
+
+          <!-- Inner Volumetric Light Beam directed naturally towards the login card -->
+          <polygon class="svg-light-beam" points="218,128 950,50 950,480 152,158" fill="url(#beamGradient)" filter="url(#beamBlur)"/>
+
+          <!-- Realistic Ground Contact Shadow under Lamp Base -->
+          <ellipse cx="110" cy="378" rx="82" ry="12" fill="rgba(0,0,0,0.7)" filter="url(#groundShadowBlur)"/>
 
           <!-- Lamp Base -->
           <ellipse cx="110" cy="365" rx="75" ry="18" fill="#0b0e14" stroke="#1c2430" stroke-width="3"/>
@@ -68,6 +89,8 @@
 
           <!-- Lamp Shade Dome (sits on top of the beam so NO light leaks behind the black dome!) -->
           <g class="lamp-head-group">
+            <!-- Glowing Aura around Bulb when ON -->
+            <circle class="bulb-halo" cx="185" cy="142" r="38" fill="rgba(56, 248, 212, 0.45)" filter="url(#bulbGlowFilter)"/>
             <path d="M125 130 C 115 80, 195 65, 215 110 C 225 130, 200 155, 160 160 Z" fill="#111622" stroke="#1f2839" stroke-width="2.5"/>
             <!-- Glow Rim -->
             <ellipse class="shade-rim-glow" cx="185" cy="142" rx="42" ry="20" transform="rotate(-25 185 142)" fill="#151d2a" stroke="#f59e0b" stroke-width="3"/>

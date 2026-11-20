@@ -76,16 +76,15 @@ body[data-on="true"] .bg-campus-img {
 /* Shading: smooth dark gradient matching user reference photo */
 .bg-shading-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
     to right,
-    rgba(6, 10, 18, 0.90) 0%,
-    rgba(6, 10, 18, 0.72) 22%,
-    rgba(6, 10, 18, 0.32) 50%,
-    rgba(6, 10, 18, 0.08) 80%,
+    rgba(4, 7, 13, 0.94) 0%,
+    rgba(4, 7, 13, 0.82) 22%,
+    rgba(4, 7, 13, 0.42) 48%,
+    rgba(4, 7, 13, 0.12) 75%,
     transparent 100%
   );
   pointer-events: none;
@@ -127,42 +126,37 @@ body[data-on="true"] #dustCanvas {
   opacity: 1;
 }
 
-/* Main Scene Layout - Balanced Professional 3-Column Grid */
+/* Main Scene Layout - Balanced Professional Architectural Composition */
 .scene-container {
   position: relative;
   z-index: 10;
   width: 100vw;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  padding: 20px 40px;
   overflow: hidden;
 }
 
 .scene-spacer {
-  grid-column: 3;
-  pointer-events: none;
+  display: none;
 }
 
-/* LEFT COLUMN: Lamp Assembly */
+/* LEFT: Grounded Architect Desk Lamp */
 .lamp-wrapper {
-  grid-column: 1;
-  position: relative;
-  width: 300px;
-  height: 440px;
+  position: absolute;
+  right: calc(50% + 295px);
+  bottom: clamp(25px, 6vh, 60px);
+  width: 280px;
+  height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
-  justify-self: end;
-  margin-right: clamp(15px, 3.5vw, 50px);
+  z-index: 15;
   flex-shrink: 0;
 }
 
 .lamp-art {
   position: relative;
-  width: 300px;
-  height: 440px;
+  width: 280px;
+  height: 420px;
   z-index: 5;
 }
 
@@ -181,6 +175,15 @@ body[data-on="true"] #dustCanvas {
   transition: fill 0.4s ease, filter 0.4s ease;
 }
 
+.bulb-halo {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+body[data-on="true"] .bulb-halo {
+  opacity: 1;
+}
+
 body[data-on="true"] .shade-rim-glow {
   stroke: var(--cyan-bright);
   fill: #14b8a6;
@@ -193,21 +196,23 @@ body[data-on="true"] .lamp-bulb {
 }
 
 /* Volumetric SVG Light Beam - Integrated directly at SVG rim */
-.svg-light-beam {
+.svg-light-beam,
+.svg-light-beam-ambient {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body[data-on="true"] .svg-light-beam {
+body[data-on="true"] .svg-light-beam,
+body[data-on="true"] .svg-light-beam-ambient {
   opacity: 1;
 }
 
 /* Hanging Pull Cord Mechanism - Centered directly through the middle of the white bulb */
 .cord-mechanism {
   position: absolute;
-  top: 152px;
-  left: 188px;
+  top: 149px;
+  left: 175px;
   width: 20px;
   display: flex;
   flex-direction: column;
@@ -292,25 +297,25 @@ body[data-on="true"] .pull-tooltip {
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4);
 }
 
-/* CENTER COLUMN: The Login / Signup Card (Mathematically Centered in Screen) */
+/* CENTER: The Login / Signup Card (Mathematically Centered in Screen) */
 .auth-card-wrapper {
-  grid-column: 2;
-  position: relative;
-  z-index: 10;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   max-width: 410px;
-  justify-self: center;
-  flex-shrink: 0;
+  z-index: 20;
 }
 
 .auth-card {
-  background: rgba(8, 14, 24, 0.52);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(10, 16, 26, 0.48);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 20px;
-  padding: 24px 26px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+  border-radius: 22px;
+  padding: 26px 26px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
   position: relative;
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -333,8 +338,10 @@ body[data-on="true"] .auth-card {
   visibility: visible;
   transform: translateY(0) scale(1);
   pointer-events: auto;
-  border-color: rgba(45, 212, 191, 0.45);
-  box-shadow: -12px 0 45px rgba(45, 212, 191, 0.25), 0 20px 50px rgba(0, 0, 0, 0.75);
+  border-left: 1.5px solid rgba(56, 248, 212, 0.65);
+  box-shadow: -18px 0 45px rgba(45, 212, 191, 0.28), 
+              0 25px 55px rgba(0, 0, 0, 0.75), 
+              inset 1px 0 12px rgba(45, 212, 191, 0.12);
 }
 
 /* Card Header */
@@ -633,7 +640,7 @@ body[data-on="true"] .auth-card {
 }
 
 /* Responsive */
-@media (max-width: 920px) {
+@media (max-width: 1040px) {
   body {
     overflow-y: auto;
   }
@@ -643,16 +650,18 @@ body[data-on="true"] .auth-card {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     padding: 30px 16px;
     min-height: 100vh;
   }
 
   .lamp-wrapper {
-    justify-self: auto;
-    margin-right: 0;
-    width: 260px;
-    height: 360px;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 250px;
+    height: 350px;
+    margin: 0 auto;
   }
 
   .lamp-art {
@@ -661,7 +670,11 @@ body[data-on="true"] .auth-card {
   }
 
   .auth-card-wrapper {
-    justify-self: auto;
-    max-width: 380px;
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    max-width: 390px;
+    margin: 0 auto;
   }
 }

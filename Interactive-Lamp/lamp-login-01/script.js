@@ -245,12 +245,12 @@ document.addEventListener('DOMContentLoaded', () => {
     reset() {
       this.x = Math.random() * dustCanvas.width;
       this.y = Math.random() * dustCanvas.height;
-      this.radius = Math.random() * 2.2 + 1;
-      this.speedX = (Math.random() - 0.5) * 0.45;
-      this.speedY = -Math.random() * 0.45 - 0.15;
-      this.baseOpacity = Math.random() * 0.5 + 0.35;
+      this.radius = Math.random() * 1.5 + 0.6;
+      this.speedX = (Math.random() - 0.3) * 0.4;
+      this.speedY = -Math.random() * 0.35 - 0.1;
+      this.baseOpacity = Math.random() * 0.45 + 0.2;
       this.opacity = this.baseOpacity;
-      this.pulseSpeed = Math.random() * 0.03 + 0.01;
+      this.pulseSpeed = Math.random() * 0.02 + 0.01;
       this.pulseAngle = Math.random() * Math.PI * 2;
     }
 
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.x += this.speedX;
       this.y += this.speedY;
       this.pulseAngle += this.pulseSpeed;
-      this.opacity = this.baseOpacity + Math.sin(this.pulseAngle) * 0.25;
+      this.opacity = this.baseOpacity + Math.sin(this.pulseAngle) * 0.2;
 
       if (this.y < 0 || this.x < 0 || this.x > dustCanvas.width) {
         this.reset();
@@ -269,8 +269,8 @@ document.addEventListener('DOMContentLoaded', () => {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(56, 248, 212, ${Math.max(0.18, this.opacity)})`;
-      ctx.shadowBlur = 10;
+      ctx.fillStyle = `rgba(56, 248, 212, ${Math.max(0.12, this.opacity)})`;
+      ctx.shadowBlur = 6;
       ctx.shadowColor = '#38f8d4';
       ctx.fill();
     }

@@ -215,11 +215,11 @@ body[data-on="true"] .light-cone {
   transform: scale(1);
 }
 
-/* Hanging Pull Cord Mechanism - Centered perfectly in the middle of the lamp shade */
+/* Hanging Pull Cord Mechanism - Centered directly through the middle of the white bulb */
 .cord-mechanism {
   position: absolute;
   top: 140px;
-  left: 172px;
+  left: 181px;
   width: 44px;
   display: flex;
   flex-direction: column;

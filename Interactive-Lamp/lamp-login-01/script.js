@@ -1,113 +1,172 @@
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
-  const pullCord = document.getElementById('pullCord');
-  const pullTooltip = document.getElementById('pullTooltip');
+  const cordMechanism = document.getElementById('cordMechanism');
+  const cordThread = document.getElementById('cordThread');
+  const cordRing = document.getElementById('cordRing');
   const dustCanvas = document.getElementById('dustCanvas');
 
   // Form Elements
-  const tabSignIn = document.getElementById('tabSignIn');
-  const tabSignUp = document.getElementById('tabSignUp');
-  const headerTitle = document.getElementById('headerTitle');
-  const headerSubtitle = document.getElementById('headerSubtitle');
-  const nameFieldGroup = document.getElementById('nameFieldGroup');
-  const emailLabel = document.getElementById('emailLabel');
-  const btnText = document.getElementById('btnText');
-  const forgotLink = document.getElementById('forgotLink');
+  const btnSignIn = document.getElementById('btnSignIn');
+  const btnSignUp = document.getElementById('btnSignUp');
+  const cardTitle = document.getElementById('cardTitle');
+  const cardSubtitle = document.getElementById('cardSubtitle');
+  const userFieldLabel = document.getElementById('userFieldLabel');
+  const inputUsername = document.getElementById('inputUsername');
+  const inputPassword = document.getElementById('inputPassword');
+  const submitCtaText = document.getElementById('submitCtaText');
+  const forgotBtn = document.getElementById('forgotBtn');
 
-  const authForm = document.getElementById('lampAuthForm');
-  const authName = document.getElementById('authName');
-  const authEmail = document.getElementById('authEmail');
-  const authPassword = document.getElementById('authPassword');
-  const nameError = document.getElementById('nameError');
-  const emailError = document.getElementById('emailError');
-  const passwordError = document.getElementById('passwordError');
-  const togglePasswordBtn = document.getElementById('togglePasswordBtn');
-  const eyeIcon = document.getElementById('eyeIcon');
-  const toast = document.getElementById('lampToast');
+  const lampForm = document.getElementById('lampForm');
+  const userError = document.getElementById('userError');
+  const passError = document.getElementById('passError');
+  const eyeToggle = document.getElementById('eyeToggle');
+  const eyeSvg = document.getElementById('eyeSvg');
+  const toast = document.getElementById('sceneToast');
 
-  let isLightOn = false;
+  let isLampOn = false;
   let isSignUpMode = true;
 
-  // Synthesize realistic mechanical switch "click" sound using Web Audio API
-  const playClickSound = () => {
+  // Synthesize realistic mechanical lamp pull switch click sound using Web Audio API
+  const playSwitchSound = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.04);
+      osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.05);
 
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
 
       osc.start();
-      osc.stop(audioCtx.currentTime + 0.04);
+      osc.stop(audioCtx.currentTime + 0.05);
     } catch (e) {
-      // AudioContext not permitted before gesture
+      // AudioContext permitted on first interaction
     }
   };
 
-  // Toggle Lamp On / Off with pull cord bounce animation
+  // Toggle Lamp State
   const toggleLamp = () => {
-    // Cord pull animation
-    pullCord.classList.add('is-pulled');
-    playClickSound();
+    isLampOn = !isLampOn;
+    body.setAttribute('data-on', isLampOn ? 'true' : 'false');
+    playSwitchSound();
 
-    setTimeout(() => {
-      pullCord.classList.remove('is-pulled');
-      isLightOn = !isLightOn;
-      body.setAttribute('data-on', isLightOn ? 'true' : 'false');
-      
-      if (isLightOn) {
-        showToast('💡 Lamp turned ON! Welcome.', 2500);
-      }
-    }, 180);
+    if (isLampOn) {
+      showToast('💡 Lamp is ON! Login interface illuminated.');
+    }
   };
 
-  pullCord.addEventListener('click', toggleLamp);
+  // -------------------------------------------------------------
+  // Interactive Drag & Pull Physics for the Cord Mechanism
+  // -------------------------------------------------------------
+  let isDragging = false;
+  let startY = 0;
+  let currentPull = 0;
+  const maxPull = 45;
+  const triggerThreshold = 25;
 
-  // Tab switching: Sign In vs Sign Up
-  tabSignIn.addEventListener('click', () => {
+  const onPointerDown = (e) => {
+    isDragging = true;
+    startY = e.clientY || (e.touches && e.touches[0].clientY);
+    cordMechanism.classList.remove('rebounding');
+  };
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+    const deltaY = clientY - startY;
+
+    if (deltaY > 0) {
+      currentPull = Math.min(deltaY, maxPull);
+      cordMechanism.style.transform = `translateY(${currentPull}px)`;
+      cordThread.style.height = `${75 + currentPull * 0.4}px`;
+    }
+  };
+
+  const onPointerUp = () => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    // Trigger toggle if pulled down beyond threshold or clicked
+    if (currentPull >= triggerThreshold || currentPull === 0) {
+      toggleLamp();
+    }
+
+    // Elastic snap back animation
+    cordMechanism.classList.add('rebounding');
+    cordMechanism.style.transform = 'translateY(0px)';
+    cordThread.style.height = '75px';
+    currentPull = 0;
+  };
+
+  cordMechanism.addEventListener('mousedown', onPointerDown);
+  window.addEventListener('mousemove', onPointerMove);
+  window.addEventListener('mouseup', onPointerUp);
+
+  // Touch Support for Mobile
+  cordMechanism.addEventListener('touchstart', onPointerDown, { passive: true });
+  window.addEventListener('touchmove', onPointerMove, { passive: true });
+  window.addEventListener('touchend', onPointerUp);
+
+  // Simple click fallback
+  cordMechanism.addEventListener('click', (e) => {
+    if (currentPull === 0) {
+      // Click bounce animation
+      cordMechanism.style.transform = 'translateY(30px)';
+      cordThread.style.height = '90px';
+      setTimeout(() => {
+        cordMechanism.classList.add('rebounding');
+        cordMechanism.style.transform = 'translateY(0px)';
+        cordThread.style.height = '75px';
+        toggleLamp();
+      }, 150);
+    }
+  });
+
+  // -------------------------------------------------------------
+  // Form Mode Switcher: Sign In vs Sign Up
+  // -------------------------------------------------------------
+  btnSignIn.addEventListener('click', () => {
     if (!isSignUpMode) return;
     isSignUpMode = false;
-    tabSignIn.classList.add('active');
-    tabSignUp.classList.remove('active');
+    btnSignIn.classList.add('active');
+    btnSignUp.classList.remove('active');
 
-    headerTitle.textContent = 'Sign In';
-    headerSubtitle.textContent = 'Welcome back! Enter your credentials';
-    nameFieldGroup.style.display = 'none';
-    emailLabel.textContent = 'Username or Email';
-    btnText.textContent = 'Sign In';
-    forgotLink.style.display = 'inline';
+    cardTitle.textContent = 'Sign In';
+    cardSubtitle.textContent = 'Welcome back! Please enter your details';
+    userFieldLabel.textContent = 'Username or Email';
+    inputUsername.placeholder = 'Enter username or email';
+    submitCtaText.textContent = 'Sign In';
+    forgotBtn.style.display = 'inline';
     clearErrors();
   });
 
-  tabSignUp.addEventListener('click', () => {
+  btnSignUp.addEventListener('click', () => {
     if (isSignUpMode) return;
     isSignUpMode = true;
-    tabSignUp.classList.add('active');
-    tabSignIn.classList.remove('active');
+    btnSignUp.classList.add('active');
+    btnSignIn.classList.remove('active');
 
-    headerTitle.textContent = 'Sign Up';
-    headerSubtitle.textContent = 'Create an account to get started';
-    nameFieldGroup.style.display = 'flex';
-    emailLabel.textContent = 'Email Address';
-    btnText.textContent = 'Create Account';
-    forgotLink.style.display = 'none';
+    cardTitle.textContent = 'Sign Up';
+    cardSubtitle.textContent = 'Create an account to get started';
+    userFieldLabel.textContent = 'Username or Email';
+    inputUsername.placeholder = 'Enter username or email';
+    submitCtaText.textContent = 'Create Account';
+    forgotBtn.style.display = 'none';
     clearErrors();
   });
 
   // Password visibility toggle
-  togglePasswordBtn.addEventListener('click', () => {
-    const isPass = authPassword.type === 'password';
-    authPassword.type = isPass ? 'text' : 'password';
+  eyeToggle.addEventListener('click', () => {
+    const isPass = inputPassword.type === 'password';
+    inputPassword.type = isPass ? 'text' : 'password';
 
-    eyeIcon.innerHTML = isPass
+    eyeSvg.innerHTML = isPass
       ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
          <line x1="1" y1="1" x2="23" y2="23"/>`
       : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -115,14 +174,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const clearErrors = () => {
-    nameError.textContent = '';
-    emailError.textContent = '';
-    passwordError.textContent = '';
+    userError.textContent = '';
+    passError.textContent = '';
   };
 
-  authName.addEventListener('input', () => { nameError.textContent = ''; });
-  authEmail.addEventListener('input', () => { emailError.textContent = ''; });
-  authPassword.addEventListener('input', () => { passwordError.textContent = ''; });
+  inputUsername.addEventListener('input', () => { userError.textContent = ''; });
+  inputPassword.addEventListener('input', () => { passError.textContent = ''; });
 
   const showToast = (msg, duration = 3000) => {
     toast.textContent = msg;
@@ -132,48 +189,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }, duration);
   };
 
-  // Form submit handler
-  authForm.addEventListener('submit', (e) => {
+  // Form Submission
+  lampForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (!isLightOn) {
-      showToast('⚠️ Please pull the lamp string first to turn on light!');
+    if (!isLampOn) {
+      showToast('⚠️ Pull the lamp string first to turn on the light!');
       return;
     }
 
-    let valid = true;
+    let isValid = true;
     clearErrors();
 
-    if (isSignUpMode && !authName.value.trim()) {
-      nameError.textContent = 'Username is required.';
-      valid = false;
+    const user = inputUsername.value.trim();
+    if (!user) {
+      userError.textContent = 'Username or email is required.';
+      isValid = false;
     }
 
-    const email = authEmail.value.trim();
-    if (!email) {
-      emailError.textContent = 'Email or username is required.';
-      valid = false;
-    }
-
-    const pass = authPassword.value;
+    const pass = inputPassword.value;
     if (!pass) {
-      passwordError.textContent = 'Password is required.';
-      valid = false;
+      passError.textContent = 'Password is required.';
+      isValid = false;
     } else if (pass.length < 6) {
-      passwordError.textContent = 'Password must be at least 6 characters.';
-      valid = false;
+      passError.textContent = 'Password must be at least 6 characters.';
+      isValid = false;
     }
 
-    if (!valid) return;
+    if (!isValid) return;
 
-    const action = isSignUpMode ? 'Registered account' : 'Signed in';
-    showToast(`✨ Success! ${action} for ${email}`);
-    authForm.reset();
+    const action = isSignUpMode ? 'Account registered' : 'Logged in';
+    showToast(`✨ Success! ${action} as ${user}`);
+    lampForm.reset();
   });
 
-  // Setup Ambient Dust Particle Canvas
+  // -------------------------------------------------------------
+  // Ambient Canvas Dust Particles Inside Light Beam
+  // -------------------------------------------------------------
   const ctx = dustCanvas.getContext('2d');
   let particles = [];
-  const particleCount = 45;
+  const particleCount = 40;
 
   const resizeCanvas = () => {
     dustCanvas.width = window.innerWidth;
@@ -183,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
-  class Particle {
+  class DustParticle {
     constructor() {
       this.reset();
     }
@@ -191,9 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
     reset() {
       this.x = Math.random() * dustCanvas.width;
       this.y = Math.random() * dustCanvas.height;
-      this.size = Math.random() * 2 + 0.5;
+      this.radius = Math.random() * 2 + 0.6;
       this.speedX = (Math.random() - 0.5) * 0.4;
-      this.speedY = -Math.random() * 0.5 - 0.1;
+      this.speedY = -Math.random() * 0.5 - 0.15;
       this.opacity = Math.random() * 0.6 + 0.2;
     }
 
@@ -209,22 +263,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     draw() {
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(45, 212, 191, ${this.opacity})`;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = '#2dd4bf';
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(56, 248, 212, ${this.opacity})`;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#38f8d4';
       ctx.fill();
     }
   }
 
   for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
+    particles.push(new DustParticle());
   }
 
   const animateDust = () => {
     ctx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
-    if (isLightOn) {
-      particles.forEach(p => {
+    if (isLampOn) {
+      particles.forEach((p) => {
         p.update();
         p.draw();
       });

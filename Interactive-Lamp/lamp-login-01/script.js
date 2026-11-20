@@ -223,11 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // -------------------------------------------------------------
-  // Ambient Canvas Dust Particles Inside Light Beam
+  // Ambient Glowing Dot Particles (Firefly / Dust Effect)
   // -------------------------------------------------------------
   const ctx = dustCanvas.getContext('2d');
   let particles = [];
-  const particleCount = 40;
+  const particleCount = 65;
 
   const resizeCanvas = () => {
     dustCanvas.width = window.innerWidth;
@@ -245,15 +245,20 @@ document.addEventListener('DOMContentLoaded', () => {
     reset() {
       this.x = Math.random() * dustCanvas.width;
       this.y = Math.random() * dustCanvas.height;
-      this.radius = Math.random() * 2 + 0.6;
-      this.speedX = (Math.random() - 0.5) * 0.4;
-      this.speedY = -Math.random() * 0.5 - 0.15;
-      this.opacity = Math.random() * 0.6 + 0.2;
+      this.radius = Math.random() * 2.2 + 1;
+      this.speedX = (Math.random() - 0.5) * 0.45;
+      this.speedY = -Math.random() * 0.45 - 0.15;
+      this.baseOpacity = Math.random() * 0.5 + 0.35;
+      this.opacity = this.baseOpacity;
+      this.pulseSpeed = Math.random() * 0.03 + 0.01;
+      this.pulseAngle = Math.random() * Math.PI * 2;
     }
 
     update() {
       this.x += this.speedX;
       this.y += this.speedY;
+      this.pulseAngle += this.pulseSpeed;
+      this.opacity = this.baseOpacity + Math.sin(this.pulseAngle) * 0.25;
 
       if (this.y < 0 || this.x < 0 || this.x > dustCanvas.width) {
         this.reset();
@@ -264,8 +269,8 @@ document.addEventListener('DOMContentLoaded', () => {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(56, 248, 212, ${this.opacity})`;
-      ctx.shadowBlur = 8;
+      ctx.fillStyle = `rgba(56, 248, 212, ${Math.max(0.18, this.opacity)})`;
+      ctx.shadowBlur = 10;
       ctx.shadowColor = '#38f8d4';
       ctx.fill();
     }
@@ -277,12 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const animateDust = () => {
     ctx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
-    if (isLampOn) {
-      particles.forEach((p) => {
-        p.update();
-        p.draw();
-      });
-    }
+    particles.forEach((p) => {
+      p.update();
+      p.draw();
+    });
     requestAnimationFrame(animateDust);
   };
 

@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deltaY > 0) {
       currentPull = Math.min(deltaY, maxPull);
       cordMechanism.style.transform = `translateY(${currentPull}px)`;
-      cordThread.style.height = `${75 + currentPull * 0.4}px`;
+      cordThread.style.height = `${65 + currentPull * 0.4}px`;
     }
   };
 
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elastic snap back animation
     cordMechanism.classList.add('rebounding');
     cordMechanism.style.transform = 'translateY(0px)';
-    cordThread.style.height = '75px';
+    cordThread.style.height = '65px';
     currentPull = 0;
   };
 
@@ -117,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
   cordMechanism.addEventListener('click', (e) => {
     if (currentPull === 0) {
       // Click bounce animation
-      cordMechanism.style.transform = 'translateY(30px)';
-      cordThread.style.height = '90px';
+      cordMechanism.style.transform = 'translateY(28px)';
+      cordThread.style.height = '80px';
       setTimeout(() => {
         cordMechanism.classList.add('rebounding');
         cordMechanism.style.transform = 'translateY(0px)';
-        cordThread.style.height = '75px';
+        cordThread.style.height = '65px';
         toggleLamp();
       }, 150);
     }

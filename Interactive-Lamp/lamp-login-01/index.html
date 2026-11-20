@@ -26,13 +26,26 @@
     
     <!-- LEFT SIDE: Lamp Section -->
     <div class="lamp-wrapper">
-      
-      <!-- Volumetric Light Beam -->
-      <div class="light-cone" id="lightCone"></div>
 
-      <!-- Desk Lamp Graphic -->
+      <!-- Desk Lamp Graphic with Integrated Volumetric Light Beam -->
       <div class="lamp-art">
-        <svg class="lamp-svg" viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="lamp-svg" viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
+          <defs>
+            <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.82"/>
+              <stop offset="20%" stop-color="#2dd4bf" stop-opacity="0.45"/>
+              <stop offset="55%" stop-color="#38bdf8" stop-opacity="0.2"/>
+              <stop offset="85%" stop-color="#06b6d4" stop-opacity="0.05"/>
+              <stop offset="100%" stop-color="#090d16" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="beamBlur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="4"/>
+            </filter>
+          </defs>
+
+          <!-- Volumetric Light Beam: starts precisely at the rim ellipse (223,124) and (147,160) -->
+          <polygon class="svg-light-beam" points="223,124 1300,-100 1300,550 147,160" fill="url(#beamGradient)" filter="url(#beamBlur)"/>
+
           <!-- Lamp Base -->
           <ellipse cx="110" cy="365" rx="75" ry="18" fill="#0b0e14" stroke="#1c2430" stroke-width="3"/>
           <ellipse cx="110" cy="360" rx="64" ry="13" fill="#141a24"/>
@@ -53,7 +66,7 @@
           <!-- Head Pivot Joint -->
           <circle cx="135" cy="135" r="9" fill="#0f141d" stroke="#f59e0b" stroke-width="3"/>
 
-          <!-- Lamp Shade Dome -->
+          <!-- Lamp Shade Dome (sits on top of the beam so NO light leaks behind the black dome!) -->
           <g class="lamp-head-group">
             <path d="M125 130 C 115 80, 195 65, 215 110 C 225 130, 200 155, 160 160 Z" fill="#111622" stroke="#1f2839" stroke-width="2.5"/>
             <!-- Glow Rim -->
